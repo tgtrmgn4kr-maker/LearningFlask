@@ -3,15 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--Icon of the website-->
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon.ico')}}"
     />
-    <title>Document</title>
+    <title>Check</title>
   </head>
   <body>
-    <h1>Hi, {{name}}!</h1>
-    <!--Receive parameter from web.py-->
+    <h1>確認您的訂單</h1>
+    <p>姓名: {{ user }}</p>
+    <p>甜度: {{ sugar }}</p>
+    <p>加料:</p>
+    {% for item in extra %}
+    <ul>
+      <li>{{ item }}</li>
+    </ul>
+    {% endfor %}
+    <p>區域: {{ area }}</p>
   </body>
 </html>

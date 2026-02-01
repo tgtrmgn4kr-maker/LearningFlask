@@ -1,22 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
-  <title>Document</title>
-</head>
-<body>
-	{% if score >= 90 %}
-	<h1>Average</h1>
-	{% elif score >=80 %}
-	<h1>Below average</h1>
-  {% elif score >= 70 %}
-	<h1>Can't have dinner</h1>
-	{% elif score >= 60 %}
-	<h1>Don't come home</h1>
-	{% else %}
-	<h1>Find a new family</h1>
-	{% endif %} 
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.ico')}}"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    {% if score >= 90 %}
+    <h1>Average</h1>
+    {% elif score >=80 %}
+    <h1>Below average</h1>
+    {% elif score >= 70 %}
+    <h1>Can't have dinner</h1>
+    {% elif score >= 60 %}
+    <h1>Don't come home</h1>
+    {% else %}
+    <h1>Find a new family</h1>
+    {% endif %}
+  </body>
 </html>

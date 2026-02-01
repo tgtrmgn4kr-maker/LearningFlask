@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.ico')}}"
+    />
+    <title>Order</title>
+  </head>
+  <body>
+    <h2>Milk tea Order</h2>
+    <!--Send information to function "order()"-->
+    <form action="{{ url_for('order')}}" method="POST">
+      <p>
+        <label for="user">大名:</label>
+        <input type="text" name="user" placeholder="你的姓名" />
+      </p>
+      <p>
+        <!--Title text-->
+        <legend>甜度:</legend>
+        <!--Only one option can be selected-->
+        <label>
+          <input type="radio" name="sugar" value="正常" />
+          正常
+        </label>
+        <label>
+          <input type="radio" name="sugar" value="半糖" />
+          半糖
+        </label>
+        <label>
+          <input type="radio" name="sugar" value="微糖" />
+          微糖
+        </label>
+      </p>
+      <p>
+        <legend>加料</legend>
+        <!--Multiple Choice-->
+        <label>
+          <input type="checkbox" name="extra" value="珍珠" />
+          珍珠
+        </label>
+        <label>
+          <input type="checkbox" name="extra" value="粉圓" />
+          粉圓
+        </label>
+        <label>
+          <input type="checkbox" name="extra" value="布丁" />
+          布丁
+        </label>
+        <label>
+          <input type="checkbox" name="extra" value="QQ" />
+          QQ
+        </label>
+      </p>
+      <p>
+        <label for="area">區域</label>
+        <select name="area" id="area">
+          <!--Default option-->
+          <option value="北區" selected>北區</option>
+          <option value="東區">東區</option>
+          <option value="西區">西區</option>
+          <option value="南區">南區</option>
+        </select>
+      </p>
+      <input type="reset" value="重設" />
+      <input type="submit" value="送出" />
+    </form>
+  </body>
+</html>

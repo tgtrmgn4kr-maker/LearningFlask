@@ -1,5 +1,0 @@
-
-2026-02-01 00:18:11,690 - web - WARNING - Caution: The API is soon to be abandoned - [web.py:16]
-2026-02-01 00:18:11,691 - web - ERROR - Cannot connect to database - [web.py:17]
-2026-02-01 00:47:34,392 - web - WARNING - Caution: The API is soon to be abandoned - [web.py:16]
-2026-02-01 00:47:34,392 - web - ERROR - Cannot connect to database - [web.py:17]
