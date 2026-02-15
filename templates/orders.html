@@ -3,26 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/static/" />
-    <!--The source path-->
+    <title>Document</title>
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon.ico')}}"
     />
-    <title>Osu!</title>
   </head>
   <body>
-    <h1>My first Web Page</h1>
+    <h2>All Orders</h2>
+
+    {% for order in orders %}
     <p>
-      <img
-        src="img/tap.png"
-        width="300"
-        height="200"
-        alt="Tap game illustration"
-      />
+      {{ order.user }} - {{ order.sugar }} - {{ order.extra }} - {{ order.area}}
     </p>
-    <p>
-      <a href="{{ url_for('templates') }}"></a>
-    </p>
+    {% endfor %}
   </body>
 </html>

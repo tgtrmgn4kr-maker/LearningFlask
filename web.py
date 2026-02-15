@@ -1,20 +1,44 @@
 import logging
-from flask import Flask, url_for, redirect, render_template, request
+from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
-
+from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, url_for, redirect, render_template, request
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tea.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['SECRET_KEY'] = b'\x9c\x82\xdb\x86\x07\xa9JB\xab\x9f\xe9\x8f\xee0?`C\xf5\x17\x06\xf9\x19[5' # Using os.urandom(24)
 
+db = SQLAlchemy(app)
+
+def init_db():
+    with app.app_context():
+        db.create_all()
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(100))
+    sugar = db.Column(db.String(20))
+    extra = db.Column(db.String(200))
+    area = db.Column(db.String(20))
+
+
+
+# ==================================================================== #
+#                      Logs                                            #
+# ==================================================================== #
 def configure_logging(app):
 
     # Avoid adding handlers repeatedly
     if app.logger.handlers:
         app.logger.handlers.clear()
 
-    # =========================
-    # Error Log
-    # =========================
+    # ========================= #
+    #        Error Log          #
+    # ========================= #
     error_handler = RotatingFileHandler(
         "error.log",
         maxBytes=1 << 20,  # 1MB
@@ -31,9 +55,9 @@ def configure_logging(app):
     app.logger.addHandler(error_handler)
     app.logger.setLevel(logging.INFO)
 
-    # =========================
-    # Access Log
-    # =========================
+    # ========================= #
+    #       Access Log          #
+    # ========================= #
     access_logger = logging.getLogger("access")
 
     access_handler = RotatingFileHandler(
@@ -51,9 +75,9 @@ def configure_logging(app):
     access_logger.addHandler(access_handler)
     access_logger.setLevel(logging.INFO)
 
-    # =========================
-    # Request Logging Hook
-    # =========================
+    # ========================= #
+    #   Request Logging Hook    #
+    # ========================= #
     @app.after_request
     def log_request(response):
         access_logger.info(
@@ -62,7 +86,11 @@ def configure_logging(app):
             f'{response.status_code}'
         )
         return response
+    
 
+# ==================================================================== #
+#                      Pages                                           #
+# ==================================================================== #
 
 # The decorator connects the route and the function
 @app.route('/index.html')
@@ -108,12 +136,11 @@ def test(point):
 def tea():
     return render_template('tea_form.html')
 
-
-# ==================================================================================== #
-# In tea_form.html,                                                                    #
-# <form action="{{ url_for('order')}}" method="POST">                                  #
-# This attribute specifies order() as the target to submit data with method of "POST"  #
-# ==================================================================================== #
+'''
+ In tea_form.html,                                                                    
+ <form action="{{ url_for('order')}}" method="POST">                                  
+ This attribute specifies order() as the target to submit data with method of "POST"  
+'''
 @app.route('/tea/order', methods=['POST'])
 def order():
     user = request.form.get('user')
@@ -121,12 +148,29 @@ def order():
     extra = request.form.getlist('extra')
     area = request.form.get('area')
 
-    return render_template('result.html',
-                           user=user,
-                           sugar=sugar,
-                           extra=extra,
-                           area=area
-                           )
+    new_order = Order(
+    user=user,
+    sugar=sugar,
+    extra=",".join(extra),
+    area=area
+    )
+
+    db.session.add(new_order)
+    db.session.commit()
+
+    return render_template(
+        'result.html',
+        user=user,
+        sugar=sugar,
+        extra=extra,
+        area=area
+    )
+
+@app.route('/orders')
+def orders():
+    all_orders = Order.query.all()
+    return render_template('orders.html', orders=all_orders)
+
 
 
 @app.route('/best_seller')
