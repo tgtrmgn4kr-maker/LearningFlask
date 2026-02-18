@@ -20,10 +20,18 @@ def init_db():
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.String(100))
+    user = db.Column(db.String(100), nullable=False)
     sugar = db.Column(db.String(20))
     extra = db.Column(db.String(200))
-    area = db.Column(db.String(20))
+    area = db.Column(db.String(20), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default= lambda:datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"""user:{self.user}\n
+                   sugar:{self.sugar}\n
+                   extra:{self.extra}\n
+                   area:{self.area}\n
+                   date:{self.date}"""
 
 
 
